@@ -1,0 +1,8 @@
+{
+    "dut_file": "../rtl/lzc.sv",  
+    "dut_name": "lzc",
+    "waveform_format": "fst",
+
+    "probe": [ "sig1", "sig2", "sig3"]
+
+}
