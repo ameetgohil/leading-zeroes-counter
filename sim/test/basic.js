@@ -1,6 +1,6 @@
 const dut = require('../build/Release/dut.node');
 const {Sim, SimUtils, RisingEdge, RisingEdges, FallingEdge, FallingEdges, Edge, Edges, Interfaces} = require('signalflip-js');
-const { Clock } = SimUtils;
+const { Clock, Tick } = SimUtils;
 const {Elastic} = Interfaces;
 const _ = require('lodash');
 
@@ -8,15 +8,6 @@ const jsc = require('jsverify');
 const assert = require('assert');
 
 let sim;
-let dummyClock = (c=-1) => {
-    if(typeof dummyClock == 'undefined') {
-        dummyClock.clk = 0;
-    }
-    if(typeof c == -1) {
-        return dummyClock.clk;
-    }
-    return c;
-};
 describe('Basic Group', () => {
   let setup = (name) => {
     // set up the environment
@@ -24,9 +15,9 @@ describe('Basic Group', () => {
     sim = new Sim(dut);
 
     // TODO: Create clock
-    let clk = new Clock(dut.clk, 1);
-    sim.addClock(clk);
-    
+    //let clk = new Clock(dut.clk, 1);
+    //sim.addClock(clk);
+
     // TODO: Add setup code (interfaces, transaction, ...) etc...
 
     // TODO: Add reset task
@@ -47,8 +38,7 @@ describe('Basic Group', () => {
       sim.addTask(function* () {
           for(let i of _.range(1000)) {
               dut.i_data(i);
-              yield* RisingEdge(dut.clk);
-              //console.log("here");
+              yield* Tick();
           }
       }());
       sim.run(10000);

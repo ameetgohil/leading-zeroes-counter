@@ -69,9 +69,9 @@ void signals::init_top(std::string name) {
   
       
 	
-uint32_t signals::clk(uint32_t val) {
-  top->clk = val;
-  return top->clk;
+uint32_t signals::i_data(uint32_t val) {
+  top->i_data = val;
+  return top->i_data;
 }
 	
       
@@ -80,23 +80,6 @@ uint32_t signals::clk(uint32_t val) {
 	
 uint32_t signals::lzc_cnt() {
   return top->lzc_cnt;
-}
-	
-      
-  
-      
-	
-uint32_t signals::temp() {
-  return top->temp;
-}
-	
-      
-  
-      
-	
-uint32_t signals::i_data(uint32_t val) {
-  top->i_data = val;
-  return top->i_data;
 }
 	
       
@@ -125,7 +108,7 @@ int signals::finish() {
 
     
       
-Napi::Number signals::clkWrapped(const Napi::CallbackInfo& info) {
+Napi::Number signals::i_dataWrapped(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   if(info.Length() > 1 || (info.Length() == 1 && !info[0].IsNumber())) {
     Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
@@ -134,9 +117,9 @@ Napi::Number signals::clkWrapped(const Napi::CallbackInfo& info) {
   Napi::Number returnValue;
   if(info.Length() == 1) {
     Napi::Number val = info[0].As<Napi::Number>();
-    returnValue = Napi::Number::New(env, signals::clk(val.Int32Value()));
+    returnValue = Napi::Number::New(env, signals::i_data(val.Int32Value()));
   } else {
-    returnValue = Napi::Number::New(env, top->clk);
+    returnValue = Napi::Number::New(env, top->i_data);
   }
   return returnValue;
 }
@@ -153,41 +136,6 @@ Napi::Number signals::lzc_cntWrapped(const Napi::CallbackInfo& info) {
     
   Napi::Number returnValue;
   returnValue = Napi::Number::New(env, top->lzc_cnt);
-  return returnValue;
-}
-      
-    
-
-    
-      
-Napi::Number signals::tempWrapped(const Napi::CallbackInfo& info) {
-  Napi::Env env = info.Env();
-  if(info.Length() > 0) {
-    Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
-  }
-    
-  Napi::Number returnValue;
-  returnValue = Napi::Number::New(env, top->temp);
-  return returnValue;
-}
-      
-    
-
-    
-      
-Napi::Number signals::i_dataWrapped(const Napi::CallbackInfo& info) {
-  Napi::Env env = info.Env();
-  if(info.Length() > 1 || (info.Length() == 1 && !info[0].IsNumber())) {
-    Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
-  }
-    
-  Napi::Number returnValue;
-  if(info.Length() == 1) {
-    Napi::Number val = info[0].As<Napi::Number>();
-    returnValue = Napi::Number::New(env, signals::i_data(val.Int32Value()));
-  } else {
-    returnValue = Napi::Number::New(env, top->i_data);
-  }
   return returnValue;
 }
       
@@ -230,19 +178,11 @@ Napi::Object signals::Init(Napi::Env env, Napi::Object exports) {
 
 
 
-  exports.Set("clk", Napi::Function::New(env, signals::clkWrapped));
+  exports.Set("i_data", Napi::Function::New(env, signals::i_dataWrapped));
 
 
 
   exports.Set("lzc_cnt", Napi::Function::New(env, signals::lzc_cntWrapped));
-
-
-
-  exports.Set("temp", Napi::Function::New(env, signals::tempWrapped));
-
-
-
-  exports.Set("i_data", Napi::Function::New(env, signals::i_dataWrapped));
 
 
   exports.Set("eval", Napi::Function::New(env, signals::evalWrapped));
