@@ -1,11 +1,9 @@
-module lzc#(int WIDTH=16)
+module lzc#(int WIDTH=8)
   (input wire[WIDTH-1:0] i_data,
-   output wire [$clog2(WIDTH):0] lzc_cnt,
-   input wire clk,
-   output reg temp);
+   output wire [$clog2(WIDTH):0] lzc_cnt
+   );
 
    wire       allzeroes;
-   
 
    function bit f(bit[WIDTH-1:0] x, int size);
       bit                        jval = 0;
@@ -22,12 +20,10 @@ module lzc#(int WIDTH=16)
       return ival;
 
    endfunction // f
-   
-   //localparam stagePow2 = 1;
 
-   function bit[WIDTH-1:0] f_input(bit[WIDTH-1:0] x, int stagePow2, );
+   function bit[WIDTH-1:0] f_input(bit[WIDTH-1:0] x, int stage );
       bit[WIDTH-1:0] dout = 0;
-      //int            stagePow2 = 2**stage;
+      int            stagePow2 = 2**stage;
       int            j=0;
       for(int i=0; i<WIDTH; i++) begin
          dout[j] |= x[i];
@@ -45,11 +41,8 @@ module lzc#(int WIDTH=16)
 
    generate
       for(i=0; i < $clog2(WIDTH); i++) begin
-         assign lzc_cnt[i] = ~allzeroes & ~f(f_input(i_data, 2**i),WIDTH);
+         assign lzc_cnt[i] = ~allzeroes & ~f(f_input(i_data, i),WIDTH);
       end
    endgenerate
 
-   always @(posedge clk)
-     temp <= ~temp;
-   
 endmodule
