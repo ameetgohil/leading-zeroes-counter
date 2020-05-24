@@ -32,7 +32,7 @@ describe('Basic Group', () => {
     // sim.addTask(() => { /* post_run function */}, 'POST_RUN'});
 
   };
-  it('test1', function () {
+  it('lzc_test', function () {
       this.timeout(10000); // Set timeout to expected run time of the test in ms
       setup('lzc_test');
       sim.addTask(function* () {
