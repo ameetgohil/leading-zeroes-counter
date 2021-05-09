@@ -19,7 +19,7 @@ namespace signals {
 	
       
   
-  int eval();
+  int eval(uint64_t time);
   int finish();
   
   Napi::Number TickWrapped(const Napi::CallbackInfo& info);

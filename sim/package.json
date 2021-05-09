@@ -5,10 +5,10 @@
    "dependencies": {
       "cmake-js": "^5.1.0",
       "jsverify": "^0.8.4",
-      "lodash": "latest",
-      "mocha": "^5.2.0",
+      "lodash": "^4.17.21",
+      "mocha": "^8.4.0",
       "node-addon-api": "latest",
-      "signalflip-js": "latest"
+      "signalflip-js": "^1.0.0"
    },
    "cmake-js": {
       "runtime": "node"
